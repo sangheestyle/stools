@@ -20,9 +20,11 @@ def read_json(path=None, names=None):
 
 def read_json_folder(folder_path=None, ends_with='.json', names=None):
     json_list = []
+    file_names = []
     for root, dirs, files in os.walk(folder_path):
         for file in files:
             if file.endswith(ends_with):
                 json_content = read_json(os.path.join(root, file), names)
                 json_list.append(json_content)
-    return json_list
+                file_names.append(file)
+    return json_list, file_names
