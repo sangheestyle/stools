@@ -1,6 +1,7 @@
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
 from nltk.stem.lancaster import LancasterStemmer
+from gensim import corpora
 
 def tokenize(doc):
     tokenizer = RegexpTokenizer(r'\w+')
@@ -22,3 +23,11 @@ def trs(doc):
     removed = remove_stop_word(token_list)
     stemmed = stem(removed)
     return stemmed
+
+def dictionary(stemmed_list):
+    dictionary = corpora.Dictionary(stemmed_list)
+    return dictionary
+
+def corpus(stemmed_list, dictionary):
+    corpus = [dictionary.doc2bow(stemmed) for stemmed in stemmed_list]
+    return corpus
