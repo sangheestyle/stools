@@ -5,7 +5,7 @@ from subprocess import call
 import cld
 from numpy import array
 sys.path.append("..")
-from stools import io, nlpbasic, ml
+from stools import io, nlp, ml
 
 folder_path = "data_google_play"
 json_names = [['extendedInfo', 'description']]
@@ -23,10 +23,10 @@ for idx, desc in enumerate(descriptions):
 
 documents = name_desc_pairs.values()
 pool = multiprocessing.Pool(processes=multiprocessing.cpu_count())
-stemmed_list = pool.map(nlpbasic.trs, documents)
-dictionary = nlpbasic.dictionary(stemmed_list)
-corpus = nlpbasic.corpus(stemmed_list, dictionary)
-corpus_lda = nlpbasic.lda(corpus, dictionary, num_topics=5)
+stemmed_list = pool.map(nlp.trs, documents)
+dictionary = nlp.dictionary(stemmed_list)
+corpus = nlp.corpus(stemmed_list, dictionary)
+corpus_lda = nlp.lda(corpus, dictionary, num_topics=5)
 
 vectors = [array(f) for f in corpus_lda]
 ml.KMeans(vectors, n_clusters=5, max_iter=1000)
