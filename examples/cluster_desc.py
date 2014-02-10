@@ -1,9 +1,11 @@
 import os
 import multiprocessing
+import sys
 from subprocess import call
 import cld
-from stools import io, nlpbasic, ml
 from numpy import array
+sys.path.append("..")
+from stools import io, nlpbasic, ml
 
 folder_path = "data_google_play"
 json_names = [['extendedInfo', 'description']]
