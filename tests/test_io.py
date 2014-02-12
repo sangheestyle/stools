@@ -1,6 +1,6 @@
 import os
 import unittest
-from stools import io
+from stools import stio
 
 class TestIO(unittest.TestCase):
 
@@ -10,7 +10,7 @@ class TestIO(unittest.TestCase):
 
     def test_json(self):
         json_names = [['category'],['extendedInfo','description']]
-        json_list = io.read_json_folder(self.json_folder_path, self.ends_with, json_names)
+        json_list = stio.read_json_folder(self.json_folder_path, self.ends_with, json_names)
         num_json_files = 0
         for root, folder, names in os.walk(self.json_folder_path):
             for name in names:

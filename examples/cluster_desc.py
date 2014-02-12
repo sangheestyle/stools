@@ -5,14 +5,14 @@ from subprocess import call
 import cld
 from numpy import array
 sys.path.append("..")
-from stools import io, nlp, ml
+from stools import stio, nlp, ml
 
 folder_path = "data_google_play"
 json_names = [['extendedInfo', 'description']]
 if not os.path.exists(folder_path):
     call(["git", "clone", "https://github.com/sangheestyle/data_google_play.git"])
 
-json_contents, file_names = io.read_json_folder(folder_path, '.json', json_names)
+json_contents, file_names = stio.read_json_folder(folder_path, '.json', json_names)
 descriptions = zip(*json_contents)[0]
 name_desc_pairs = {}
 for idx, desc in enumerate(descriptions):
