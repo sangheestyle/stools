@@ -7,6 +7,7 @@ def main():
     stemmer_type, input_file, output_file = sys.argv[1], sys.argv[2], sys.argv[3]
     with open(input_file, "r") as f:
         text = f.read()
+    text = text.decode('utf-8')
     words = nlp.tokenize(text)
     stemmer = Stemmer().create_stemmer(stemmer_type)
     stemming_result = []
