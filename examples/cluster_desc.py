@@ -2,6 +2,8 @@ import os
 import multiprocessing
 import sys
 from subprocess import call
+from operator import itemgetter
+from itertools import groupby
 import cld
 from numpy import array
 sys.path.append("..")
@@ -36,3 +38,7 @@ vectors = [array(f) for f in corpus_lda]
 prediction = ml.KMeans(vectors, n_clusters=5, max_iter=1000)
 for idx, item in enumerate(apk_info):
     apk_info[idx] = [item[0], item[1], prediction[idx]]
+
+apk_info.sort(key = itemgetter(2))
+groups = groupby(apk_info, itemgetter(2))
+desc_groups = [[item[1] for item in data] for key, data in groups]
