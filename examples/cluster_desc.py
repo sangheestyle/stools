@@ -15,21 +15,24 @@ if not os.path.exists(folder_path):
 json_contents, file_names = stio.read_json_folder(folder_path, '.json', json_names)
 descriptions = zip(*json_contents)[0]
 
-# The number of input files is 1365, but the number of result of name_desc_pairs
+# The number of input files is 1365, but the number of result of apk_info
 # is 971 due to flitering by length of description and language (english only)
-name_desc_pairs = {}
+apk_info = []
 for idx, desc in enumerate(descriptions):
     if len(desc) > 1000:
         lang = cld.detect(desc.encode('utf-8'))
         if lang[1] == 'en' and len(lang[4]) == 1:
-            name_desc_pairs[file_names[idx]] = desc.encode('ascii', errors='ignore')
+            apk_info.append([file_names[idx],
+                                    desc.encode('ascii', errors='ignore')])
 
-documents = name_desc_pairs.values()
+documents = zip(*apk_info)[1]
 pool = multiprocessing.Pool(processes=multiprocessing.cpu_count())
-stemmed_list = pool.map(nlp.trs, documents)
+stemmed_list = pool.map(nlp.trs, descriptions)
 dictionary = nlp.dictionary(stemmed_list)
 corpus = nlp.corpus(stemmed_list, dictionary)
 corpus_lda = nlp.lda(corpus, dictionary, num_topics=5)
 
 vectors = [array(f) for f in corpus_lda]
 prediction = ml.KMeans(vectors, n_clusters=5, max_iter=1000)
+for idx, item in enumerate(apk_info):
+    apk_info[idx] = [item[0], item[1], prediction[idx]]
