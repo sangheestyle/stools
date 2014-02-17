@@ -14,6 +14,9 @@ if not os.path.exists(folder_path):
 
 json_contents, file_names = stio.read_json_folder(folder_path, '.json', json_names)
 descriptions = zip(*json_contents)[0]
+
+# The number of input files is 1365, but the number of result of name_desc_pairs
+# is 971 due to flitering by length of description and language (english only)
 name_desc_pairs = {}
 for idx, desc in enumerate(descriptions):
     if len(desc) > 1000:
@@ -29,4 +32,4 @@ corpus = nlp.corpus(stemmed_list, dictionary)
 corpus_lda = nlp.lda(corpus, dictionary, num_topics=5)
 
 vectors = [array(f) for f in corpus_lda]
-ml.KMeans(vectors, n_clusters=5, max_iter=1000)
+prediction = ml.KMeans(vectors, n_clusters=5, max_iter=1000)
