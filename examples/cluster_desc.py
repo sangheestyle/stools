@@ -44,3 +44,10 @@ for idx, item in enumerate(apk_info):
 apk_info.sort(key = itemgetter(2))
 groups = groupby(apk_info, itemgetter(2))
 desc_groups = [[item[1] for item in data] for key, data in groups]
+
+for idx, contents_list in enumerate(desc_groups):
+    file_name = "cluster_" + str(idx) + ".txt"
+    with open(file_name, "w") as f:
+        for contents in contents_list:
+            stemmed_words = ''.join(contents)
+            f.write("%s\n" % stemmed_words)
