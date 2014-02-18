@@ -36,7 +36,10 @@ corpus_lda = nlp.lda(corpus, dictionary, num_topics=5)
 vectors = [array(f) for f in corpus_lda]
 prediction = ml.KMeans(vectors, n_clusters=5, max_iter=1000)
 for idx, item in enumerate(apk_info):
-    apk_info[idx] = [item[0], item[1], prediction[idx]]
+    apk_name = item[0]
+    stemmed_content = ' '.join(stemmed_list[idx])
+    groupID = prediction[idx]
+    apk_info[idx] = [apk_name, stemmed_content, groupID]
 
 apk_info.sort(key = itemgetter(2))
 groups = groupby(apk_info, itemgetter(2))
