@@ -24,8 +24,7 @@ for idx, desc in enumerate(descriptions):
     if len(desc) > 1000:
         lang = cld.detect(desc.encode('utf-8'))
         if lang[1] == 'en' and len(lang[4]) == 1:
-            apk_info.append([file_names[idx],
-                                    desc.encode('ascii', errors='ignore')])
+            apk_info.append([file_names[idx], desc.encode('ascii', errors='ignore')])
 
 filtered_desc = zip(*apk_info)[1]
 pool = multiprocessing.Pool(processes=multiprocessing.cpu_count())
