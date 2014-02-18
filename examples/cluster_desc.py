@@ -27,9 +27,9 @@ for idx, desc in enumerate(descriptions):
             apk_info.append([file_names[idx],
                                     desc.encode('ascii', errors='ignore')])
 
-documents = zip(*apk_info)[1]
+filtered_desc = zip(*apk_info)[1]
 pool = multiprocessing.Pool(processes=multiprocessing.cpu_count())
-stemmed_list = pool.map(nlp.trs, descriptions)
+stemmed_list = pool.map(nlp.trs, filtered_desc)
 dictionary = nlp.dictionary(stemmed_list)
 corpus = nlp.corpus(stemmed_list, dictionary)
 corpus_lda = nlp.lda(corpus, dictionary, num_topics=5)
