@@ -1,5 +1,4 @@
 import os
-import multiprocessing
 import sys
 from subprocess import call
 from operator import itemgetter
@@ -27,8 +26,7 @@ for idx, desc in enumerate(descriptions):
             apk_info.append([file_names[idx], desc.encode('ascii', errors='ignore')])
 
 filtered_desc = zip(*apk_info)[1]
-pool = multiprocessing.Pool(processes=multiprocessing.cpu_count())
-stemmed_list = pool.map(nlp.trs, filtered_desc)
+stemmed_list = nlp.trs(filtered_desc)
 dictionary = nlp.dictionary(stemmed_list)
 corpus = nlp.corpus(stemmed_list, dictionary)
 corpus_lda = nlp.lda(corpus, dictionary, num_topics=5)

@@ -1,3 +1,4 @@
+from multiprocessing import Pool, cpu_count
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
 from nltk.stem.lancaster import LancasterStemmer
@@ -34,7 +35,19 @@ def stem(word_list):
     stemmed = [stemmer.stem(i) for i in word_list]
     return stemmed
 
-def trs(doc):
+def trs(contents):
+    print type(contents)
+    if type(contents) == list or tuple:
+        pool = Pool(processes=cpu_count())
+        stemmed_doc_list = pool.map(trs_job, contents)
+        return stemmed_doc_list
+    elif type(contents) == str:
+        stemmed_doc = trs_job(contents)
+        return stemmed_doc
+    else:
+        raise ValueError
+
+def trs_job(doc):
     token_list = tokenize(doc)
     removed = remove_stop_word(token_list)
     stemmed = stem(removed)
