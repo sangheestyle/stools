@@ -35,6 +35,18 @@ def stem(stemmer_name, word_list):
     stemmed = [stemmer.stem(i) for i in word_list]
     return stemmed
 
+def stem_text(stemmer_name, input_file, output_file=None):
+    with open(input_file, "r") as f:
+        contents = [line.strip() for line in f]
+    stemmed_doc_list = trs(contents, stemmer_name)
+    if output_file == None:
+        return stemmed_doc_list
+    else:
+        with open(output_file, "w") as f:
+            for doc_list in stemmed_doc_list:
+                for item in doc_list:
+                    f.write("%s " % item)
+
 def trs(contents, stemmer_name="lancaster"):
     if type(contents) == list or tuple:
         pool = Pool(processes=cpu_count())
