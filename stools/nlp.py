@@ -1,8 +1,8 @@
 from multiprocessing import Pool, cpu_count
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
-from nltk.stem.lancaster import LancasterStemmer
 from gensim import corpora, models, utils
+from stools.stemmer import Stemmer
 
 class MyLdaModel(models.ldamodel.LdaModel):
     def __getitem__(self, bow, eps=0.01):
@@ -30,13 +30,12 @@ def remove_stop_word(word_list):
     removed = [i for i in word_list if i not in stop]
     return removed
 
-def stem(word_list):
-    stemmer = LancasterStemmer()
+def stem(stemmer_name, word_list):
+    stemmer = Stemmer().create_stemmer(stemmer_name)
     stemmed = [stemmer.stem(i) for i in word_list]
     return stemmed
 
-def trs(contents):
-    print type(contents)
+def trs(contents, stemmer_name="lancaster"):
     if type(contents) == list or tuple:
         pool = Pool(processes=cpu_count())
         stemmed_doc_list = pool.map(trs_job, contents)
@@ -47,10 +46,10 @@ def trs(contents):
     else:
         raise ValueError
 
-def trs_job(doc):
+def trs_job(doc, stemmer_name="lancaster"):
     token_list = tokenize(doc)
     removed = remove_stop_word(token_list)
-    stemmed = stem(removed)
+    stemmed = stem(stemmer_name, removed)
     return stemmed
 
 def dictionary(stemmed_list):
