@@ -14,4 +14,4 @@ stools requires following tools.
 
 You can use pip to intall requirements.
 
-    $ pip install config/requirements.txt
+    $ pip install -r config/requirements.txt
