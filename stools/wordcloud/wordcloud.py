@@ -17,7 +17,7 @@ from query_integral_image import query_integral_image
 FONT_PATH = "font/DroidSansMono.ttf"
 
 
-def make_wordcloud(words, counts, fname, font_path=None, width=400, height=200,
+def make_wordcloud(words, counts, fname, font_path=None, width=800, height=400,
                    margin=5, ranks_only=False):
     """Build word cloud using word counts, store in image.
 
