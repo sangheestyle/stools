@@ -3,6 +3,7 @@ import sys
 from subprocess import call
 from operator import itemgetter
 from itertools import groupby
+from collections import Counter
 import cld
 from numpy import array
 from sklearn.feature_extraction.text import CountVectorizer
@@ -47,14 +48,12 @@ desc_groups = [[item[1] for item in data] for key, data in groups]
 
 for idx, contents_list in enumerate(desc_groups):
     file_name = "cluster_" + str(idx) + ".txt"
-    with open(file_name, "w") as f:
-        for contents in contents_list:
-            stemmed_words = ''.join(contents)
-            f.write("%s\n" % stemmed_words)
-    cv = CountVectorizer(min_df=1, charset_error="ignore", max_features=200)
     text = ' '.join(array(contents_list).flatten())
-    counts = cv.fit_transform([text]).toarray().ravel()
-    words = array(cv.get_feature_names())
+    with open(file_name, "w") as f:
+        f.write("%s" % text)
+    occurrences = Counter(text.split())
+    words = array(occurrences.keys())
+    counts = array(occurrences.values())
     words = words[counts > 1]
     counts = counts[counts > 1]
     output_pic_file_name = "cluster_" + str(idx) + ".png"
