@@ -1,4 +1,5 @@
 from multiprocessing import Pool, cpu_count
+from functools import partial
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
 from gensim import corpora, models, utils
@@ -50,7 +51,8 @@ def stem_text(stemmer_name, input_file, output_file=None):
 def trs(contents, stemmer_name="lancaster"):
     if type(contents) == list or tuple:
         pool = Pool(processes=cpu_count())
-        stemmed_doc_list = pool.map(trs_job, contents)
+        stemmed_doc_list = pool.map(partial(trs_job, stemmer_name=stemmer_name),
+                                    contents)
         return stemmed_doc_list
     elif type(contents) == str:
         stemmed_doc = trs_job(contents)
