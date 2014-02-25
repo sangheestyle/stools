@@ -5,8 +5,10 @@ from operator import itemgetter
 from itertools import groupby
 import cld
 from numpy import array
+from sklearn.feature_extraction.text import CountVectorizer
 sys.path.append("..")
 from stools import stio, nlp, ml
+from stools.wordcloud.wordcloud import make_wordcloud
 
 folder_path = "data_google_play"
 json_names = [['extendedInfo', 'description']]
@@ -49,3 +51,12 @@ for idx, contents_list in enumerate(desc_groups):
         for contents in contents_list:
             stemmed_words = ''.join(contents)
             f.write("%s\n" % stemmed_words)
+    cv = CountVectorizer(min_df=1, charset_error="ignore", max_features=200)
+    text = ' '.join(array(contents_list).flatten())
+    counts = cv.fit_transform([text]).toarray().ravel()
+    words = array(cv.get_feature_names())
+    words = words[counts > 1]
+    counts = counts[counts > 1]
+    output_pic_file_name = "cluster_" + str(idx) + ".png"
+    make_wordcloud(words, counts, output_pic_file_name,
+                   font_path="../stools/wordcloud/font/DroidSansMono.ttf")
